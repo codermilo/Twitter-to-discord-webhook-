@@ -141,7 +141,6 @@ function streamTweets() {
 (async () => {
     let currentRules;
     log.info('Starting script');
-    console.log('starting...');
     try {
         //   Get all stream rules
         currentRules = await getRules();
