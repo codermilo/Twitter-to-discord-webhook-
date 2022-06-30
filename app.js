@@ -31,9 +31,6 @@ const colors = {
     ERROR: chalk.red,
 };
 
-prefix.reg(log);
-log.enableAll();
-
 prefix.apply(log, {
     format(level, name, timestamp) {
         return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](level)} ${chalk.green(`${name}:`)}`;
