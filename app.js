@@ -1,8 +1,8 @@
-var Twitter = require('twitter');
-const Twit = require('twit');
-const config = require('dotenv').config();
-const needle = require('needle');
-const { MessageEmbed, WebhookClient } = require('discord.js');
+var log = require('loglevel');
+var needle = require('needle');
+var { MessageEmbed, WebhookClient } = require('discord.js');
+const prefix = require('loglevel-plugin-prefix');
+const chalk = require('chalk');
 
 // Twitter credentials
 const token = process.env.bearertoken;
@@ -18,6 +18,10 @@ const webhookClient = new WebhookClient({ id: webhookId, token: webhookToken });
 
 // Beginning of Twitter API stream stuff
 const rules = [{ value: "from:Coach_Kenshin" }];
+
+//loglevel-prefix setup
+prefix.reg(log);
+log.enableAll();
 
 // Get stream rules 
 async function getRules() {
@@ -84,7 +88,7 @@ function streamTweets() {
             var testText = json.data.text;
             var testName = json.includes.users[0].name;
             var testUsername = json.includes.users[0].username;
-            
+
             var profile = json.includes.users[0].profile_image_url;
 
             // Now to send a message to discord via webhook 
@@ -101,15 +105,20 @@ function streamTweets() {
                 embeds: [embed],
             });
 
-        } catch (error) { }
-    })
+        } catch (error) {
+            log.error(error.stack);
+            log.error(error.name);
+            log.error(error.message);
+        }
+    });
 
     return stream
 }
 
 (async () => {
     let currentRules;
-
+    log.info('Starting script');
+    console.log('starting...');
     try {
         //   Get all stream rules
         currentRules = await getRules();
