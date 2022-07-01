@@ -1,8 +1,8 @@
-import log, { enableAll, getLogger, error as _error, info } from 'loglevel';
-import needle, { get } from 'needle';
-import { MessageEmbed, WebhookClient } from 'discord.js';
-import { reg, apply } from 'loglevel-plugin-prefix';
-import { magenta, cyan, blue, yellow, red, gray, green } from 'chalk';
+var log = require('loglevel');
+var needle = require('needle');
+var { MessageEmbed, WebhookClient } = require('discord.js');
+var prefix = require('loglevel-plugin-prefix');
+var chalk = require('chalk');
 
 // Twitter credentials
 const token = process.env.bearertoken;
@@ -20,26 +20,26 @@ const webhookClient = new WebhookClient({ id: webhookId, token: webhookToken });
 const rules = [{ value: "from:Coach_Kenshin" }];
 
 //loglevel-prefix and chalk setup
-reg(log);
-enableAll();
+prefix.reg(log);
+log.enableAll();
 
 const colors = {
-    TRACE: magenta,
-    DEBUG: cyan,
-    INFO: blue,
-    WARN: yellow,
-    ERROR: red,
+    TRACE: chalk.magenta,
+    DEBUG: chalk.cyan,
+    INFO: chalk.blue,
+    WARN: chalk.yellow,
+    ERROR: chalk.red,
 };
 
-apply(log, {
+prefix.apply(log, {
     format(level, name, timestamp) {
-        return `${gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](level)} ${green(`${name}:`)}`;
+        return `${chalk.gray(`[${timestamp}]`)} ${colors[level.toUpperCase()](level)} ${chalk.green(`${name}:`)}`;
     },
 });
 
-apply(getLogger('critical'), {
+prefix.apply(log.getLogger('critical'), {
     format(level, name, timestamp) {
-        return red.bold(`[${timestamp}] ${level} ${name}:`);
+        return chalk.red.bold(`[${timestamp}] ${level} ${name}:`);
     },
 });
 
@@ -94,7 +94,7 @@ async function deleteRules(rules) {
 }
 
 function streamTweets() {
-    const stream = get(streamURL, {
+    const stream = needle.get(streamURL, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -126,9 +126,9 @@ function streamTweets() {
             });
 
         } catch (error) {
-            _error(error.stack);
-            _error(error.name);
-            _error(error.message);
+            log.error(error.stack);
+            log.error(error.name);
+            log.error(error.message);
         }
     });
 
@@ -137,7 +137,7 @@ function streamTweets() {
 
 (async () => {
     let currentRules;
-    info('Starting script');
+    log.info('Starting script');
     try {
         //   Get all stream rules
         currentRules = await getRules();
