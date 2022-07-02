@@ -1,3 +1,6 @@
+
+require('dotenv').config();
+
 var log = require('loglevel');
 var needle = require('needle');
 var { MessageEmbed, WebhookClient } = require('discord.js');
@@ -6,9 +9,12 @@ var chalk = require('chalk');
 
 // Twitter credentials
 const token = process.env.bearertoken;
+
 // Discord credentials
 const webhookId = process.env.webhookid;
 const webhookToken = process.env.webhooktoken;
+
+// const webhookToken = 'buAxbC47MCGweSnAzvlCl1K7f2Gh1BedBktB9Tul7zf8_S5Qp6AZ_C6kAUxrj1e5TmBb';
 
 const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules';
 const streamURL = 'https://api.twitter.com/2/tweets/search/stream?user.fields=description,created_at,profile_image_url&tweet.fields=entities&expansions=author_id';
@@ -17,7 +23,8 @@ const streamURL = 'https://api.twitter.com/2/tweets/search/stream?user.fields=de
 const webhookClient = new WebhookClient({ id: webhookId, token: webhookToken });
 
 // Beginning of Twitter API stream stuff
-const rules = [{ value: "from:Coach_Kenshin" }];
+const twitterusername=process.env.twitterusername;
+const rules = [{ value: "from:" + twitterusername }]; 
 
 //loglevel-prefix and chalk setup
 prefix.reg(log);
@@ -102,7 +109,9 @@ function streamTweets() {
 
     stream.on('data', (data) => {
         try {
+            console.log(data);
             const json = JSON.parse(data)
+            console.log(json);
 
             var testUrl = "https://twitter.com/" + json.includes.users[0].name + "/status/" + json.data.id;
             var testText = json.data.text;
