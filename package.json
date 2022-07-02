@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^5.0.1",
+    "chalk": "^4.1.2",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
     "env": "^0.0.2",
+    "got": "^11.8.3",
     "loglevel": "^1.8.0",
     "loglevel-plugin-prefix": "^0.8.4",
     "needle": "^3.1.0"
