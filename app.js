@@ -16,18 +16,14 @@ const token = process.env.bearertoken;
 // Discord credentials
 const webhookId = process.env.webhookid;
 const webhookToken = process.env.webhooktoken;
-const testWebhookId = process.env.webhookid;
-const testWebhookToken = process.env.webhooktoken;
-
-
-// const webhookToken = 'buAxbC47MCGweSnAzvlCl1K7f2Gh1BedBktB9Tul7zf8_S5Qp6AZ_C6kAUxrj1e5TmBb';
-// https://discord.com/api/webhooks/979807398355157113/CpjrXTy3MJmD7yUcYzeQvyc0E0BRDm2iSNpXdLX8mRgbpe9jGHgdpCDTgEt1zRb3O963
+const testWebhookId = process.env.testwebhookid;
+const testWebhookToken = process.env.testwebhooktoken;
 
 const rulesURL = 'https://api.twitter.com/2/tweets/search/stream/rules';
 const streamURL = 'https://api.twitter.com/2/tweets/search/stream?user.fields=description,created_at,profile_image_url&tweet.fields=entities&expansions=author_id';
 
 // Creating and setting a webhookClient
-const webhookClient = new WebhookClient({ id:testWebhookId, token: testWebhookToken });
+const webhookClient = new WebhookClient({ id: webhookId, token: webhookToken });
 
 // Beginning of Twitter API stream stuff
 const twitterusername = process.env.twitterusername;
